@@ -1,4 +1,4 @@
-// NAME: 
+// NAME: Gary Tou
 // FILE: main.cpp
 // DESCRIPTION: Tests IntSet class
 
