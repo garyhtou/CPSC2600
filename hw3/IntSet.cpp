@@ -31,7 +31,12 @@ IntSet::IntSet(int sizeArg)
 IntSet::IntSet(const IntSet &src)
 {
 	this->bits = new bitstring[src.bitsSize];
-	*this->bits = *src.bits;
+	// TODO: find more elegant way to copy over bitstring array
+	for (int i = 0; i < src.bitsSize; i++)
+	{
+		this->bits[i] = src.bits[i];
+	}
+	// *this->bits = *src.bits;
 	this->bitsSize = src.bitsSize;
 	this->size = src.size;
 }
@@ -39,8 +44,7 @@ IntSet::IntSet(const IntSet &src)
 // Destructor
 IntSet::~IntSet()
 {
-	delete[] this->bits;
-	this->bits = NULL;
+	delete this->bits;
 }
 
 // Adds the specified integer to the set if not already an element.
@@ -321,11 +325,12 @@ bool IntSet::isEqual(const IntSet &operand) const
 // ========== PRIVATE ==========
 
 // Returns the array element index of which an element is in.
-// Assumes highest elements in index 0, and lowest elements in index (size - 1)
+// Assumes lowest elements in index 0, and highest elements
+// in index (`bitsSize` - 1)
 // Zero-indexed
 int IntSet::bitsArrayIndex(const int element) const
 {
-	return (bitsSize - 1) - ((element - 1) / INT_BIT_LENGTH);
+	return (element - 1) / INT_BIT_LENGTH;
 }
 
 // Returns the element index in the array which an element is in.
