@@ -23,20 +23,18 @@ IntSet::IntSet(int sizeArg)
 	}
 
 	// Create bitstring array and save it's size for easy access
-	bits = new bitstring[numBitstrings];
-	bitsSize = numBitstrings;
+	this->bits = new bitstring[numBitstrings]{};
+	this->bitsSize = numBitstrings;
 }
 
 // Copy constructor
 IntSet::IntSet(const IntSet &src)
 {
 	this->bits = new bitstring[src.bitsSize];
-	// TODO: find more elegant way to copy over bitstring array
 	for (int i = 0; i < src.bitsSize; i++)
 	{
 		this->bits[i] = src.bits[i];
 	}
-	// *this->bits = *src.bits;
 	this->bitsSize = src.bitsSize;
 	this->size = src.size;
 }
@@ -44,7 +42,7 @@ IntSet::IntSet(const IntSet &src)
 // Destructor
 IntSet::~IntSet()
 {
-	delete this->bits;
+	delete[] this->bits;
 }
 
 // Adds the specified integer to the set if not already an element.
@@ -152,7 +150,7 @@ void IntSet::display() const
 	}
 
 	// Add closing bracket
-	cout << "}";
+	cout << "}" << endl;
 }
 
 // Returns the number of elements in the set.
@@ -162,7 +160,7 @@ int IntSet::numElements() const
 	int counter = 0;
 
 	// Loop through all possible elements (the domain)
-	for (int i = 1; i < this->size; i++)
+	for (int i = 1; i <= this->size; i++)
 	{
 		// Add '1' to the counter if the element exists in the set
 		if (this->isElement(i))
@@ -190,7 +188,7 @@ IntSet IntSet::unions(const IntSet &operand) const
 	// the array)
 	for (int i = 0; i < largerSet.bitsSize; i++)
 	{
-		// If this is out of range of the smaller set, just copy the larger set's
+		// If this is out of domain of the smaller set, just copy the larger set's
 		// bitstring to the results. This is the set identity law (A ∪ Ø = A).
 		if (i >= smallerSet.bitsSize)
 		{
@@ -240,6 +238,8 @@ IntSet IntSet::difference(const IntSet &operand) const
 	// set because that is what the domain of results will be.
 	IntSet results(this->size);
 
+	IntSet operandComplement = operand.complement();
+
 	// Loop through all bitstrings in the invoked IntSet. We are only looping
 	// through the domain of the invoked set because elements outside of that
 	// domain can not be within the resulting difference.
@@ -253,15 +253,9 @@ IntSet IntSet::difference(const IntSet &operand) const
 			continue;
 		}
 
-		// Since we can only remove elements which already exist in the set, we will
-		// start by computing the intersection of the two sets.
-		// Note: Because this is simpily intersecting two bitstrings, we will use
-		// the bitwise 'AND', instead of 'IntSet::intersect'.
-		bitstring intersection = this->bits[i] & this->bits[i];
-
 		// The algebraic subtraction of the invoked bitstring and the intersection
 		// (of the invoked and operand sets) will result in the difference.
-		results.bits[i] = this->bits[i] - intersection;
+		results.bits[i] = this->bits[i] & operandComplement.bits[i];
 	}
 
 	return results;
@@ -274,7 +268,7 @@ IntSet IntSet::complement() const
 	IntSet results(this->size);
 
 	// Loop through all possible elements in the set (the domain)
-	for (int i = 1; i < this->size; i++)
+	for (int i = 1; i <= this->size; i++)
 	{
 		// If the current element IS NOT an element of the current set, add it as an
 		// element of the resulting set
@@ -308,6 +302,8 @@ bool IntSet::isEqual(const IntSet &operand) const
 		}
 		else
 		{
+			// cout << largerSet.bits[i] << " ^ " << smallerSet.bits[i] << " = " << (largerSet.bits[i] ^ smallerSet.bits[i]) << " (" << ((largerSet.bits[i] ^ smallerSet.bits[i]) != 0) << ")" << endl;
+
 			// The bitwise 'XOR' allows us to determine if there is a difference in
 			// the bits. Any number greater than (or not equal to) '0' signifies at
 			// least one bit difference. Therefore, we would return false.
@@ -323,6 +319,9 @@ bool IntSet::isEqual(const IntSet &operand) const
 }
 
 // ========== PRIVATE ==========
+
+// Sets the static variable containing the delimiter used for `display()`
+const string IntSet::DISPLAY_DELIMITER = ", ";
 
 // Returns the array element index of which an element is in.
 // Assumes lowest elements in index 0, and highest elements

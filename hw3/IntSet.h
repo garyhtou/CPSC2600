@@ -58,13 +58,17 @@ public:
   bool isEqual(const IntSet &operand) const;
 
 private:
-  // Stores the bits (Set data)
+  // Stores the set data (array of bitstrings)
   bitstring *bits;
+
+  // Stores the number of bitstrings within `bits` (size of the array)
   int bitsSize;
+
+  // Stores the domain (max size) of the set
   int size;
 
-  const int INT_BIT_LENGTH = 32;
-  const string DISPLAY_DELIMITER = ", ";
+  static const int INT_BIT_LENGTH = 32;
+  static const string DISPLAY_DELIMITER;
 
   // Returns the array element index of which an element is in
   int bitsArrayIndex(const int element) const;
