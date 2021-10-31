@@ -302,8 +302,6 @@ bool IntSet::isEqual(const IntSet &operand) const
 		}
 		else
 		{
-			// cout << largerSet.bits[i] << " ^ " << smallerSet.bits[i] << " = " << (largerSet.bits[i] ^ smallerSet.bits[i]) << " (" << ((largerSet.bits[i] ^ smallerSet.bits[i]) != 0) << ")" << endl;
-
 			// The bitwise 'XOR' allows us to determine if there is a difference in
 			// the bits. Any number greater than (or not equal to) '0' signifies at
 			// least one bit difference. Therefore, we would return false.
