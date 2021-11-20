@@ -43,6 +43,23 @@
         "isDefault": true
       },
       "detail": "For CPSC 2600, HW 3. IntSet bitstring"
+    },
+    {
+      "type": "cppbuild",
+      "label": "C/C++: make HW5",
+      "command": "make",
+      "args": [],
+      "options": {
+        "cwd": "${fileDirname}"
+      },
+      "problemMatcher": [
+        "$gcc"
+      ],
+      "group": {
+        "kind": "build",
+        "isDefault": true
+      },
+      "detail": "HW5"
     }
   ],
   "version": "2.0.0"
