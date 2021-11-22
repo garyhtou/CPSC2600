@@ -32,7 +32,7 @@
 			"request": "launch",
 			// "program": "${fileDirname}/${fileBasenameNoExtension}",
 			"program": "${workspaceRoot}/hw5/hw5",
-			"args": [],
+			"args": ["graph1.txt"],
 			"stopAtEntry": false,
 			"cwd": "${fileDirname}",
 			"environment": [],
